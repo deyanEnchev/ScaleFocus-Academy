@@ -24,14 +24,28 @@ func add(l *MagicList, value int) {
 
 }
 
+// func toSlice(l *MagicList) []int {
+// 	var mySlice []int
+// 	mySlice = append([]int{l.LastItem.Value}, mySlice...)
+// 	l.LastItem = l.LastItem.PrevItem
+// 	if l.LastItem != nil {
+// 		return append(toSlice(l), mySlice...)
+// 	}
+// 	return mySlice
+// }
+
 func toSlice(l *MagicList) []int {
-	var mySlice []int
-	mySlice = append([]int{l.LastItem.Value}, mySlice...)
-	l.LastItem = l.LastItem.PrevItem
-	if l.LastItem != nil {
-		return append(toSlice(l), mySlice...)
+	var currentItem = l.LastItem
+
+	if currentItem.PrevItem != nil {
+		var tmp []int
+		l.LastItem = currentItem.PrevItem
+		tmp = toSlice(l)
+		return append(tmp, currentItem.Value)
+
 	}
-	return mySlice
+
+	return []int{currentItem.Value}
 }
 
 func main() {
@@ -40,12 +54,7 @@ func main() {
 	add(l, 2)
 	add(l, 3)
 	add(l, 4)
-	add(l, 5)
-	add(l, 6)
-	add(l, 7)
-	add(l, 8)
-	add(l, 9)
-	add(l, 10)
+
 
 	var mySlice []int
 	mySlice = toSlice(l)
