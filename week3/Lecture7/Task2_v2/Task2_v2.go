@@ -25,8 +25,9 @@ type Card struct {
 	Suit  int
 }
 
+
+
 func main() {
-	
 
 	/* possible card values: 2,3,4,5,6,7,8,9,10,J,D,K,A
 	otherwise: panic
@@ -35,7 +36,6 @@ func main() {
 	otherwise: panic
 	*/
 
-	
 	cardsSlice := []Card{Card{Value: J, Suit: club},
 		Card{Value: 2, Suit: diamond},
 		Card{Value: 3, Suit: heart},
@@ -54,42 +54,48 @@ func main() {
 		Card{Value: A, Suit: club},
 	}
 
-	var cc compareCards = func(playerOne, playerTwo Card) int {
-		playerOneTotal := playerOne.Value + playerOne.Suit
-		playerTwoTotal := playerTwo.Value + playerTwo.Suit
-		var result int
+	var temp compareCardsV2
+	
 
-		if playerOneTotal < playerTwoTotal {
-			result = -1
-		}
+	cc := &temp
 
-		if playerOneTotal == playerTwoTotal {
-			result = 0
-		}
-
-		if playerOneTotal > playerTwoTotal {
-			result = 1
-		}
-
-		return result
-	}
-
-
-	printProperly(maxCard(cardsSlice, cc))
+	printProperly(maxCardV2(cardsSlice, *cc))
 
 }
 
-//maxCard with Anonymous cardComparator function.
+type Blabla string
 
-type compareCards func(playerOne, playerTwo Card) int
+type compareCardsV2 func(playerOne, playerTwo Card) int
 
 
-func maxCard(cards []Card, comparatorFunc compareCards) Card {
+func (cc *compareCardsV2) compareCardsV2 (playerOne, playerTwo Card) int {
+	
+	playerOneTotal := playerOne.Value + playerOne.Suit
+	playerTwoTotal := playerTwo.Value + playerTwo.Suit
+	var result int
+
+	if playerOneTotal < playerTwoTotal {
+		result = -1
+	}
+
+	if playerOneTotal == playerTwoTotal {
+		result = 0
+	}
+
+	if playerOneTotal > playerTwoTotal {
+		result = 1
+	}
+
+	return result
+}
+
+
+func maxCardV2(cards []Card, comparatorFunc compareCardsV2) Card {
 
 	var biggestCard Card
 
 	for i := 0; i < len(cards)-1; i++ {
-		if comparatorFunc(cards[i], biggestCard) == 1 {
+		if comparatorFunc.compareCardsV2(cards[i], biggestCard) == 1 {
 			biggestCard = cards[i]
 		}
 	}
