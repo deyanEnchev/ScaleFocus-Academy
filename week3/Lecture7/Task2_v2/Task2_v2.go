@@ -63,7 +63,6 @@ func main() {
 
 }
 
-type Blabla string
 
 type compareCardsV2 func(playerOne, playerTwo Card) int
 
