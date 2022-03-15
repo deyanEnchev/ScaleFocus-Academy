@@ -3,65 +3,69 @@ package main
 import (
 	"fmt"
 	"sync"
-	"time"
 )
 
 type ConcurrentPrinter struct {
 	sync.WaitGroup
 	sync.Mutex
+	counter  int
+	lastItem string
 }
-
-// type PrintText interface {
-// 	Print(string)
-// }
-
-// func (cp *ConcurrentPrinter) Print(text string) {
-// 	cp.Lock()
-// 	fmt.Print(text)
-// 	cp.Unlock()
-// }
 
 func (cp *ConcurrentPrinter) PrintFoo(times int) {
 
+	cp.Add(1)
 	go func() {
-		for i := 0; i < times; i++ {
-			defer cp.Done()
+		defer cp.Done()
+		for {
 			cp.Lock()
-			cp.Add(1)
-			if i%2 == 0 {
-				fmt.Print("foo")
+
+			if cp.counter == times {
+				cp.Unlock()
+				break
 			}
+
+			if cp.lastItem != "foo" {
+				fmt.Print("foo")
+				cp.lastItem = "foo"
+				cp.counter++
+			}
+
 			cp.Unlock()
-			time.Sleep(time.Millisecond)
 		}
 	}()
 
 }
 func (cp *ConcurrentPrinter) PrintBar(times int) {
 
+	cp.Add(1)
 	go func() {
-		for i := 0; i < times; i++ {
-			defer cp.Done()
+		defer cp.Done()
+		for {
 			cp.Lock()
-			cp.Add(1)
-			if i%2 != 0 {
-				fmt.Print("bar")
-			}
-			cp.Unlock()
 
-			time.Sleep(time.Millisecond)
+			if cp.counter == times {
+				cp.Unlock()
+				break
+			}
+
+			if cp.lastItem != "bar" {
+				fmt.Print("bar")
+				cp.lastItem = "bar"
+				cp.counter++
+			}
+
+			cp.Unlock()
 		}
 	}()
-
 
 }
 
 func main() {
 	times := 10
-
 	cp := &ConcurrentPrinter{}
+	cp.lastItem = "bar"
 	cp.PrintFoo(times)
 	cp.PrintBar(times)
-	time.Sleep(time.Millisecond)
 	cp.Wait()
 }
