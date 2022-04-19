@@ -123,10 +123,13 @@ func CheckDB() {
 	}
 
 	// defer rows.Close()
+
 	if !rows.Next() {
-		PopulateDb(db)
+		InitialFillingOfDb(db)
 		return
 	}
+
+	rows, _ = db.Query(`SELECT * FROM top_stories`)
 
 	for rows.Next() {
 		var inp InputDB
@@ -151,18 +154,16 @@ func CheckDB() {
 	}
 }
 
-func PopulateDb(db *sql.DB) {
+func InitialFillingOfDb(db *sql.DB) {
 	for i, story := range result.TopStories {
 		t := time.Now().Format(time.RFC1123)
 
-		input := InputDB{i, story.Title, story.Score, t}
+		input := InputDB{i + 1, story.Title, story.Score, t}
 
 		dbResp = append(dbResp, input)
 		_, err := db.Exec(`
-		UPDATE top_stories SET id = $1,
-		title = $2,
-		score = $3,
-		time_stored = $4; `, input.ID, input.Title, input.Score, input.TimeStored)
+		INSERT INTO top_stories(id,title,score,time_stored)
+		VALUES($1,$2,$3,$4); `, input.ID, input.Title, input.Score, input.TimeStored)
 
 		if err != nil {
 			log.Fatal(err)
@@ -170,8 +171,24 @@ func PopulateDb(db *sql.DB) {
 	}
 }
 
-//INSERT INTO top_stories(id,title,score,time_stored)
-//VALUES($1,$2,$3,$4);
+func PopulateDb(db *sql.DB) {
+	for i, story := range result.TopStories {
+		t := time.Now().Format(time.RFC1123)
+
+		input := InputDB{i + 1, story.Title, story.Score, t}
+
+		dbResp = append(dbResp, input)
+		_, err := db.Exec(`
+		UPDATE top_stories SET title = $1,
+		score = $2,
+		time_stored = $3
+		WHERE id = $4; `, input.Title, input.Score, input.TimeStored, input.ID)
+
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+}
 
 func main() {
 	response := Story{}
