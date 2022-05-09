@@ -1,5 +1,0 @@
-*.db
-/.vscode
-/go.mod
-/go.sum
-/Demo.go
