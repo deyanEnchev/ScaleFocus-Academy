@@ -1,0 +1,54 @@
+POST http://localhost:3000/cats HTTP/1.1
+content-type: application/json
+
+{
+    "name": "fishmaster",
+    "type": "cat-fish"
+}
+
+###
+
+GET http://localhost:3000/admin/main HTTP/1.1
+Authorization: Basic jack:1234
+
+
+###
+
+GET http://localhost:3000/lists HTTP/1.1
+
+
+###
+
+POST http://localhost:3000/lists HTTP/1.1
+content-type: application/json
+
+{
+    "name": "Groceries"
+}
+
+
+###
+
+POST http://localhost:3000/lists/2/tasks HTTP/1.1
+content-type: application/json
+
+{
+    "text": "Test"
+}
+
+###
+
+DELETE http://localhost:3000/lists/3 HTTP/1.1
+
+###
+
+GET http://localhost:3000/lists/2/tasks HTTP/1.1
+
+###
+
+PATCH http://localhost:3000/tasks/1 HTTP/1.1
+content-type: application/json
+
+{
+    "completed": true
+}

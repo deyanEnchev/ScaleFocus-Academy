@@ -1,0 +1,11 @@
+{
+    "version": "1",
+    "packages": [
+      {
+        "path": "sqlcDB",
+        "engine": "mysql",
+        "schema": "query.sql",
+        "queries": "query.sql"
+      }
+    ]
+} 
