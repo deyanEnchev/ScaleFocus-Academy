@@ -1,0 +1,63 @@
+POST http://localhost:3000/cats HTTP/1.1
+content-type: application/json
+
+{
+    "name": "fishmaster",
+    "type": "cat-fish"
+}
+
+###
+
+GET http://localhost:3000/api/lists HTTP/1.1
+Authorization: Basic jack:1234
+
+
+###
+
+GET http://localhost:3000/app/ HTTP/1.1
+
+###
+
+GET http://localhost:3000/api/lists HTTP/1.1
+Authorization: Basic f0rsakeN:asdasdwse13214
+
+
+###
+
+POST http://localhost:3000/api/lists HTTP/1.1
+content-type: application/json
+Authorization: Basic did:asdasd
+
+{
+    "name": "Groceries"
+}
+
+
+###
+
+POST http://localhost:3000/api/lists/1/tasks HTTP/1.1
+content-type: application/json
+Authorization: Basic f0rsakeN:asdasdwse13214
+
+
+{
+    "text": "Test"
+}
+
+###
+
+DELETE http://localhost:3000/lists/1 HTTP/1.1
+
+###
+
+GET http://localhost:3000/api/lists/1/tasks HTTP/1.1
+Authorization: Basic f0rsakeN:asdasdwse13214
+
+###
+
+PATCH http://localhost:3000/tasks/1 HTTP/1.1
+content-type: application/json
+
+{
+    "completed": true
+}
