@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+option go_package = "grpc/pb";
+
+message Story {
+    string title = 1;
+    int32 score = 2;
+    int32 id = 3;
+}
+
+message ResponseStories {
+    repeated Story top_stories = 1;
+}
+
+message TopCountRequest {
+    int32 max_count = 1;
+}
+
+message TopCountResponse {
+    repeated int32 arr = 1;
+}
+
+service EmployeeService {
+    rpc FetchTopStories(TopCountRequest) returns (TopCountResponse);
+    rpc FetchItems(TopCountResponse) returns (ResponseStories);
+}
+
+
+// PS C:\Users\muzik\Desktop\PluralSight-GO\gRPC> protoc --go_out=go/src --go-grpc_out=src pb/messages.proto ---> generate gRPC code
+// go get -u google.golang.org/grpc
+// go get -u google.golang.org/protobuf
